@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use App\Http\Controllers\Traits\ExceptionReport;
 
 class Handler extends ExceptionHandler
 {
@@ -41,6 +42,20 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
+
+        if (in_array('api', $e->guards())) {
+            if ($e instanceof \Illuminate\Auth\AuthenticationException) {
+                $msg = '未授权';
+
+                return response()->json([ 'success' => false, 'message' => $msg ,'status_code'=>400], 200);
+            }
+            if ($e instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
+                $msg = '该模型未找到';
+
+                return response()->json([ 'success' => false, 'message' => $msg ,'status_code'=>400], 200);
+            }
+
+       }
 
         if ($e instanceof UnauthorizedException) {
             $msg = $e->getMessage() ? $e->getMessage() : '出现异常';
