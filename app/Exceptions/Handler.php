@@ -4,7 +4,6 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use App\Http\Controllers\Traits\ExceptionReport;
 
 class Handler extends ExceptionHandler
 {
